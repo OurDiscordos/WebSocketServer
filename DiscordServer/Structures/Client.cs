@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace DiscordServer.Structures
@@ -17,7 +19,6 @@ namespace DiscordServer.Structures
 
         public List<Chat> Chats;
 
-        //make constructor
         public Client(string name, string password)
         {
             this.Name = name;
@@ -30,7 +31,7 @@ namespace DiscordServer.Structures
 
         public bool SendLogin()
         {
-
+            return true;
         }
 
         public void SendMessage(Client client, string message)
@@ -44,6 +45,14 @@ namespace DiscordServer.Structures
                 Chats.Add(new Chat(ChatType.PRIVATE, new List<Client>() { this, client }));
                 Chats.First(x => x.Clients.Contains(client)).SendMessage(message);
             }
+        }
+
+        public void UpdateChats()
+        {
+            Sessions.ForEach(x =>
+            {
+                Server.server.SendAsync(x, JsonSerializer.Serialize(Chats));
+            });
         }
 
     }

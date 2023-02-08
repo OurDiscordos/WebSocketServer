@@ -9,13 +9,13 @@ namespace DiscordServer
 {
     public class Server
     {
-        public WatsonWsServer server;
+        public static WatsonWsServer server;
         
         public Server()
         {
             server = new WatsonWsServer();
-            
-            
+            server.Start();
+            Console.WriteLine("Server started");
         }
     }
 }
